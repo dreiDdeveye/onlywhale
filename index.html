@@ -243,7 +243,7 @@ footer .disclaimer{font-size:10px;color:var(--text-muted);opacity:0.6;max-width:
 
   <div class="ca-bar">
     <div class="ca-bar-label"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>CONTRACT</div>
-    <div class="ca-bar-address" onclick="copyCA()"><span>WHA1e5o0nLyWh4L3sT0k3nCA...xYz69420</span><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div>
+    <div class="ca-bar-address" onclick="copyCA()"><span>7i2b3qEmFzW2o21avV3BA1qgkDMvQugKNZ25Dz5wpump</span><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div>
     <div class="ca-bar-divider"></div>
     <div class="ca-bar-stat"><svg viewBox="0 0 24 24" style="stroke:var(--green)"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span class="val green">+69.4%</span></div>
     <div class="ca-bar-divider"></div>
@@ -410,7 +410,7 @@ footer .disclaimer{font-size:10px;color:var(--text-muted);opacity:0.6;max-width:
       <a href="#" class="btn-hero btn-hero-outline"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>View Chart</a>
     </div>
     <div class="cta-contract reveal" onclick="copyCA()">
-      <span class="ca">WHA1e5o0nLyWh4L3sT0k3nCA...xYz69420</span>
+      <span class="ca">7i2b3qEmFzW2o21avV3BA1qgkDMvQugKNZ25Dz5wpump</span>
       <span class="copy-label"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</span>
     </div>
     <div class="cta-socials reveal">
@@ -435,7 +435,7 @@ window.addEventListener('scroll',()=>{document.getElementById('nav').classList.t
 document.querySelectorAll('.reveal').forEach(el=>{new IntersectionObserver((e)=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'}).observe(el)});
 function toggleFaq(el){const i=el.parentElement;const w=i.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!w)i.classList.add('open')}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
-function copyCA(){navigator.clipboard?.writeText('WHA1e5o0nLyWh4L3sT0k3nCA...xYz69420');showToast('Contract address copied!')}
+function copyCA(){navigator.clipboard?.writeText('7i2b3qEmFzW2o21avV3BA1qgkDMvQugKNZ25Dz5wpump');showToast('Contract address copied!')}
 const mk=document.querySelector('.hero-mockup');document.addEventListener('mousemove',(e)=>{if(!mk||window.innerWidth<1024)return;const x=(e.clientX/window.innerWidth-0.5)*6;const y=(e.clientY/window.innerHeight-0.5)*6;mk.style.transform=`perspective(1000px) rotateY(${-4+x}deg) rotateX(${2-y}deg)`});
 
 // 3D Carousel
