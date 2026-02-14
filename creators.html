@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OnlyWhales — Choose Your Whale</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#00AFF0;--brand-dark:#009ad6;--brand-glow:rgba(0,175,240,0.15);--brand-bg:rgba(0,175,240,0.06);--bg:#fff;--bg-soft:#f7f9fc;--bg-elevated:#f0f4f8;--bg-dark:#1a1d23;--text-primary:#1a1d23;--text-secondary:#5f6876;--text-muted:#8f96a3;--green:#00c853;--red:#ff3d57;--gold:#ffb300;--pink:#ff4d8d;--border:rgba(0,0,0,0.08);--border-light:rgba(0,0,0,0.05);--shadow-sm:0 1px 3px rgba(0,0,0,0.06);--shadow-md:0 4px 16px rgba(0,0,0,0.08);--shadow-lg:0 12px 40px rgba(0,0,0,0.1);--shadow-brand:0 4px 20px rgba(0,175,240,0.25)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}::selection{background:var(--brand);color:#fff}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.85);backdrop-filter:blur(24px) saturate(1.2);border-bottom:1px solid var(--border-light);transition:all 0.4s}
+nav.scrolled{background:rgba(255,255,255,0.95);box-shadow:var(--shadow-sm)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:38px;height:38px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-brand);transition:transform 0.3s;overflow:hidden;font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.nav-logo:hover .nav-logo-icon{transform:rotate(-6deg) scale(1.05)}
+.nav-logo-text{font-size:21px;font-weight:800;letter-spacing:-0.5px;color:var(--text-primary)}
+.nav-logo-text .w{color:var(--brand)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-back{padding:9px 22px;background:none;border:1.5px solid var(--border);border-radius:50px;color:var(--text-secondary);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-back:hover{border-color:var(--brand);color:var(--brand)}
+.btn-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* HERO HEADER */
+.page-header{padding:120px 48px 40px;text-align:center;background:linear-gradient(180deg,#f0f8ff 0%,#fff 100%);position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,175,240,0.06),transparent 70%);top:-150px;right:-100px;pointer-events:none}
+.page-header .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--brand-bg);border:1px solid rgba(0,175,240,0.15);border-radius:50px;font-size:12px;font-weight:700;color:var(--brand);margin-bottom:20px;letter-spacing:0.5px;text-transform:uppercase}
+.page-header .badge .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.page-header h1{font-family:'Libre Baskerville',serif;font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.15;letter-spacing:-0.5px;margin-bottom:16px}
+.page-header h1 .acc{color:var(--brand)}
+.page-header p{font-size:17px;color:var(--text-secondary);line-height:1.7;max-width:540px;margin:0 auto}
+.page-header p strong{color:var(--text-primary);font-weight:600}
+
+/* FILTER BAR */
+.filter-bar{padding:16px 48px;display:flex;align-items:center;justify-content:center;gap:10px;border-bottom:1px solid var(--border-light);background:var(--bg-soft);position:sticky;top:68px;z-index:50;flex-wrap:wrap}
+.filter-pill{padding:8px 20px;border-radius:50px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;border:1.5px solid var(--border);background:#fff;color:var(--text-secondary)}
+.filter-pill:hover{border-color:var(--brand);color:var(--brand)}
+.filter-pill.active{background:var(--brand);border-color:var(--brand);color:#fff;box-shadow:var(--shadow-brand)}
+.filter-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-left:16px}
+
+/* CREATOR GRID */
+.creators-section{padding:48px;max-width:1200px;margin:0 auto}
+.creators-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+/* CREATOR CARD */
+.creator-card{background:#fff;border:1px solid var(--border-light);border-radius:20px;overflow:hidden;transition:all 0.4s;cursor:pointer;position:relative}
+.creator-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+.creator-card:hover .creator-img .overlay{opacity:1}
+.creator-card:hover .creator-img img,.creator-card:hover .creator-img .placeholder{transform:scale(1.05)}
+
+.creator-img{position:relative;height:280px;overflow:hidden;background:linear-gradient(135deg,#e8f4fd,#f0e6ff)}
+.creator-img .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;transition:transform 0.5s;background:linear-gradient(135deg,var(--brand-bg),rgba(255,77,141,0.06))}
+.creator-img .placeholder-icon{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.creator-img .placeholder-icon svg{width:36px;height:36px;stroke:var(--brand);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.creator-img .placeholder span{font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.creator-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.creator-img .overlay{position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,0.6));opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-end;justify-content:center;padding:20px}
+.creator-img .overlay .peek-btn{padding:10px 28px;background:var(--brand);border:none;border-radius:50px;color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:var(--shadow-brand);transform:translateY(10px);transition:transform 0.3s;display:flex;align-items:center;gap:6px}
+.creator-card:hover .overlay .peek-btn{transform:translateY(0)}
+.peek-btn svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.online-dot{position:absolute;top:16px;left:16px;padding:4px 12px;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);border-radius:50px;display:flex;align-items:center;gap:6px;font-size:11px;color:#fff;font-weight:600}
+.online-dot::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+
+.creator-info{padding:18px 20px}
+.creator-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.creator-name{font-size:17px;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:6px}
+.creator-name .verified{width:16px;height:16px;background:var(--brand);border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.creator-name .verified svg{width:9px;height:9px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.creator-handle{font-size:12px;color:var(--text-muted)}
+.creator-roi{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--green);background:rgba(0,200,83,0.08);padding:4px 12px;border-radius:50px;border:1px solid rgba(0,200,83,0.15)}
+
+.creator-bio{font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;min-height:44px}
+.creator-bio .hot{color:var(--pink);font-weight:600}
+.creator-bio .blue{color:var(--brand);font-weight:600}
+
+.creator-stats{display:flex;gap:16px;padding-top:14px;border-top:1px solid var(--border-light)}
+.creator-stat{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+.creator-stat svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.creator-stat .num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--text-primary);font-size:12px}
+
+.creator-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.creator-tag{font-size:10px;padding:3px 10px;border-radius:50px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.tag-hot{background:rgba(255,77,141,0.08);color:var(--pink);border:1px solid rgba(255,77,141,0.15)}
+.tag-whale{background:var(--brand-bg);color:var(--brand);border:1px solid rgba(0,175,240,0.15)}
+.tag-new{background:rgba(255,179,0,0.08);color:var(--gold);border:1px solid rgba(255,179,0,0.15)}
+.tag-fire{background:rgba(255,61,87,0.08);color:var(--red);border:1px solid rgba(255,61,87,0.15)}
+
+/* BOTTOM CTA */
+.bottom-cta{text-align:center;padding:60px 48px 80px}
+.bottom-cta p{font-size:15px;color:var(--text-muted);margin-bottom:16px}
+.bottom-cta p .acc{color:var(--brand);font-weight:700}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);padding:12px 24px;background:var(--bg-dark);border-radius:50px;color:#fff;font-size:13px;font-weight:600;z-index:300;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);pointer-events:none;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:1024px){.creators-grid{grid-template-columns:repeat(2,1fr)}nav{padding:0 24px}.creators-section{padding:32px 24px}.page-header{padding:100px 24px 32px}.filter-bar{padding:12px 24px}}
+@media(max-width:640px){.creators-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}.page-header h1{font-size:28px}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">OW</div>
+    <span class="nav-logo-text">Only<span class="w">Whales</span></span>
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="btn-back"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Back</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="badge"><span class="dot"></span> 247 creators online now</div>
+  <h1>Pick your <span class="acc">favorite whale.</span><br>They're dying to show you.</h1>
+  <p>Every creator is <strong>ready to expose their positions</strong> — you just have to choose who you want to watch. They don't hold back. They don't tease. They go <strong>all the way</strong>.</p>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-pill active" onclick="filterAll(this)">All Creators</button>
+  <button class="filter-pill" onclick="filterAll(this)">Trending</button>
+  <button class="filter-pill" onclick="filterAll(this)">Top Earners</button>
+  <button class="filter-pill" onclick="filterAll(this)">New & Hot</button>
+  <button class="filter-pill" onclick="filterAll(this)">Most Followed</button>
+  <span class="filter-count">247 creators</span>
+</div>
+
+<div class="creators-section">
+  <div class="creators-grid">
+
+    <!-- CREATOR 1 -->
+    <div class="creator-card" onclick="showToast('Opening Whale_Mommy\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <span class="online-dot">Online</span>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">Whale_Mommy <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@whale_mommy</div></div>
+          <div class="creator-roi">+420%</div>
+        </div>
+        <div class="creator-bio">I show you <span class="hot">ALL my positions</span>... every entry, every exit. I go deep and I go hard. My followers always <span class="blue">finish on top</span>.</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">8.2K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">3.1K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">412</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-hot">Hot Right Now</span><span class="creator-tag tag-whale">Whale</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 2 -->
+    <div class="creator-card" onclick="showToast('Opening SolanaSlut\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <span class="online-dot">Online</span>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">SolanaSlut <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@solana_slut</div></div>
+          <div class="creator-roi">+690%</div>
+        </div>
+        <div class="creator-bio">I'm <span class="hot">dirty with my trades</span> and I don't apologize. You want safe? Go somewhere else. You want <span class="blue">filthy gains</span>? Come watch me work.</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">12.4K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">5.8K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">287</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-fire">On Fire</span><span class="creator-tag tag-hot">Naughty</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 3 -->
+    <div class="creator-card" onclick="showToast('Opening DeFi_Doll\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">DeFi_Doll <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@defi_doll</div></div>
+          <div class="creator-roi">+340%</div>
+        </div>
+        <div class="creator-bio">I look innocent but my portfolio is <span class="hot">absolutely nasty</span>. I'll show you things you've never seen. <span class="blue">Wanna peek?</span></div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">6.7K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">2.4K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">198</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-new">New</span><span class="creator-tag tag-hot">Spicy</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 4 -->
+    <div class="creator-card" onclick="showToast('Opening TokenTease\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <span class="online-dot">Online</span>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">TokenTease <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@token_tease</div></div>
+          <div class="creator-roi">+185%</div>
+        </div>
+        <div class="creator-bio">I start slow... build the tension... then I go <span class="hot">all in when you least expect it</span>. My watchers are always <span class="blue">begging for more</span>.</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">9.1K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">4.5K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">356</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-hot">Seductive</span><span class="creator-tag tag-whale">Whale</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 5 -->
+    <div class="creator-card" onclick="showToast('Opening LiquidityQueen\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <span class="online-dot">Online</span>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">LiquidityQueen <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@liquidity_queen</div></div>
+          <div class="creator-roi">+520%</div>
+        </div>
+        <div class="creator-bio">I keep things <span class="hot">wet with liquidity</span> and I never pull out early. Deep positions only. <span class="blue">Come get soaked</span> in alpha.</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">11.3K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">6.2K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">501</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-fire">On Fire</span><span class="creator-tag tag-whale">Top Earner</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 6 -->
+    <div class="creator-card" onclick="showToast('Opening RugMeDaddy\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">RugMeDaddy <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@rugme_daddy</div></div>
+          <div class="creator-roi">+275%</div>
+        </div>
+        <div class="creator-bio">They call me dangerous but my watchers <span class="hot">keep coming back</span>. I might rug your heart but never your portfolio. <span class="blue">Addicted yet?</span></div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">7.8K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">3.9K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">224</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-hot">Dangerous</span><span class="creator-tag tag-new">Rising</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 7 -->
+    <div class="creator-card" onclick="showToast('Opening PumpItBaby\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <span class="online-dot">Online</span>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">PumpItBaby <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@pump_it_baby</div></div>
+          <div class="creator-roi">+890%</div>
+        </div>
+        <div class="creator-bio">I make things <span class="hot">pump so hard</span> you won't know what hit you. Once I start, I don't stop til we're <span class="blue">all satisfied</span>. Ready?</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">15.6K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">8.9K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">612</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-fire">Explosive</span><span class="creator-tag tag-whale">Top Creator</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 8 -->
+    <div class="creator-card" onclick="showToast('Opening YieldBabe\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">YieldBabe <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@yield_babe</div></div>
+          <div class="creator-roi">+310%</div>
+        </div>
+        <div class="creator-bio">Sweet face, <span class="hot">naughty portfolio</span>. I yield the most when you watch closely. The longer you stay, the <span class="blue">bigger the reward</span>.</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">5.4K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">2.1K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">143</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-new">New Creator</span><span class="creator-tag tag-hot">Naughty</span></div>
+      </div>
+    </div>
+
+    <!-- CREATOR 9 -->
+    <div class="creator-card" onclick="showToast('Opening MissLeverage\'s profile...')">
+      <div class="creator-img">
+        <div class="placeholder">
+          <div class="placeholder-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <span>Profile image</span>
+        </div>
+        <span class="online-dot">Online</span>
+        <div class="overlay"><button class="peek-btn"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watch Now</button></div>
+      </div>
+      <div class="creator-info">
+        <div class="creator-top">
+          <div><div class="creator-name">MissLeverage <span class="verified"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="creator-handle">@miss_leverage</div></div>
+          <div class="creator-roi">+1,200%</div>
+        </div>
+        <div class="creator-bio">I use <span class="hot">maximum leverage</span> and I'm not afraid to take it to the limit. 100x? That's foreplay. I don't stop until I <span class="blue">blow up or blow your mind</span>.</div>
+        <div class="creator-stats">
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="num">18.7K</span> likes</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span class="num">10.1K</span> watchers</div>
+          <div class="creator-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span class="num">847</span> posts</div>
+        </div>
+        <div class="creator-tags"><span class="creator-tag tag-fire">Legendary</span><span class="creator-tag tag-whale">#1 Creator</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="bottom-cta">
+  <p>More creators are <span class="acc">exposing themselves</span> every day. This is just the beginning.</p>
+  <a href="#" class="btn-hero btn-hero-primary" style="padding:15px 34px;border-radius:50px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;background:var(--brand);border:none;color:#fff;box-shadow:var(--shadow-brand);transition:all 0.3s" onmouseover="this.style.background='var(--brand-dark)'" onmouseout="this.style.background='var(--brand)'"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Browse All 247 Creators</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+function filterAll(el){document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active')}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+</script>
+</body>
+</html>
